@@ -1,0 +1,16 @@
+{
+    "name": "assembly_townrally_rallysystem",
+    "rootNamespace": "TownRally.RallySystem",
+    "references": [
+        "GUID:c5026dfe544a7654898094aa70ca63ef"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
