@@ -12,11 +12,12 @@ namespace TownRally.RallySystem
         internal static EventIn_LoadMaps EventIn_LoadMaps= new EventIn_LoadMaps();
         [SerializeField] private MapTiler mapTiler = null;
         [SerializeField] private string rootMapsFolder = string.Empty;
-
+        private Transform myTransform = null;
         private void Init()
         {
             mapTiler.Init();
             EventIn_LoadMaps.AddListener(LoadMaps);
+            this.myTransform = this.GetComponent<Transform>();
         }
 
         //int baseHor = 284638;
@@ -24,25 +25,41 @@ namespace TownRally.RallySystem
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.T))
+            //if (Input.GetKeyDown(KeyCode.T))
+            //{
+            //    this.LoadMaps(this.rootMapsFolder, 19);
+            //}
+            //if (Input.GetKeyDown(KeyCode.Z))
+            //{
+            //    this.LoadMaps(this.rootMapsFolder, 18);
+            //}
+
+            if(Input.GetKeyDown(KeyCode.V))
             {
-                this.LoadMaps(this.rootMapsFolder, 19);
+
             }
         }
 
-        private void LoadMaps(string pathRoot, int zoomFactor)
+        private void LoadMaps(string pathRoot, int zoom)
         {
-            pathRoot += "\\" + zoomFactor;
+            Transform parentObj = this.CreateRootGameObject(zoom);
+            pathRoot += "\\" + zoom;
             KeyValuePair<int, int> valuesMinMaxI = GetMinMaxFilenameDirectories(pathRoot, true);
+            int indexI = 0;
             for (int i = valuesMinMaxI.Key; i <= valuesMinMaxI.Value; i++)
             {
                 string pathNew = pathRoot + "\\" + i;
                 KeyValuePair<int, int> valuesMinMaxJ = GetMinMaxFilenameDirectories(pathNew, false);
+                int indexJ = 0;
+                if(valuesMinMaxJ.Key < 0) {
+                    continue;
+                }
                 for (int j = valuesMinMaxJ.Key; j <= valuesMinMaxJ.Value; j++)
                 {
-                    
-                    this.CreateTile(pathNew + "\\" + j + ".png", i, j, valuesMinMaxI.Key, valuesMinMaxJ.Key);
+                    this.CreateTile(parentObj, pathNew + "\\" + j + ".png", zoom, i, j, indexI, indexJ);
+                    indexJ++;
                 }
+                indexI++;
             }
         }
 
@@ -59,17 +76,24 @@ namespace TownRally.RallySystem
             else
             {
                 fileFolderNames = Directory.GetFiles(pathRoot).ToList();
-                for(int i = fileFolderNames.Count - 1; i >= 0; i--)
+                if (fileFolderNames.Count > 0)
                 {
-                    if(!fileFolderNames[i].EndsWith(".png") && !fileFolderNames[i].EndsWith(".jpg"))
+                    for (int i = fileFolderNames.Count - 1; i >= 0; i--)
                     {
-                        fileFolderNames.RemoveAt(i);
+                        if (!fileFolderNames[i].EndsWith(".png") && !fileFolderNames[i].EndsWith(".jpg"))
+                        {
+                            fileFolderNames.RemoveAt(i);
+                        }
+                        else
+                        {
+                            fileFolderNames[i] = fileFolderNames[i].Replace(".png", "").Replace(".jpg", "");
+                            fileFolderNames[i] = RemovePrefixPath(fileFolderNames[i]);
+                        }
                     }
-                    else
-                    {
-                        fileFolderNames[i] = fileFolderNames[i].Replace(".png", "").Replace(".jpg", "");
-                        fileFolderNames[i] = RemovePrefixPath(fileFolderNames[i]);
-                    }
+                }
+                else
+                {
+                    fileFolderNames.Add("-1");
                 }
             }
             // parse to int
@@ -90,7 +114,16 @@ namespace TownRally.RallySystem
             return listFFN[listFFN.Count - 1];
         }
 
-        private void CreateTile(string pathRoot, int hor, int vert, int minHor, int minVert)
+        private Transform CreateRootGameObject(int zoom)
+        {
+            GameObject goTile = new GameObject("zoom_" + zoom);
+            Transform tTile = goTile.GetComponent<Transform>();
+            tTile.parent = this.myTransform;
+            tTile.localPosition = new Vector3(0, 0, 0);
+            return tTile;
+        }
+
+        private void CreateTile(Transform parentObject, string pathRoot, int zoom, int hor, int vert, int indexI, int indexJ)
         {
             Debug.Log("PATH ROOT: " + pathRoot);
             if(pathRoot.EndsWith("/")) { pathRoot = pathRoot.Remove(pathRoot.Length - 1, 1); }
@@ -101,7 +134,16 @@ namespace TownRally.RallySystem
                 Debug.Log("ERROR: Texture not found (" + path + ")");
                 return;
             }
-            mapTiler.CreateNewTile(hor, vert, minHor, minVert, texture);
+
+            Tile tile = new Tile()
+            {
+                Vertical = vert,
+                Horizontal = hor,
+                Zoom = zoom,
+                IndexI = indexI,
+                IndexJ = indexJ
+            };
+            mapTiler.CreateNewTile(parentObject, tile, texture);
         }
 
         private Texture2D LoadPNG(string filePath)

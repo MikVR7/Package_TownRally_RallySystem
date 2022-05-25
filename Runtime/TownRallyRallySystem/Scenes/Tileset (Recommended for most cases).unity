@@ -433,6 +433,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &727440203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 727440204}
+  - component: {fileID: 727440205}
+  m_Layer: 0
+  m_Name: map_runner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &727440204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727440203}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -850.85876, y: 6.9681997, z: 777.94073}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &727440205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727440203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2f79f72cc092149912a23678ad3eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &927180884 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224211754546119878, guid: 1c49bf85ee4ba9848969e6ee9ad6f116, type: 3}
@@ -523,7 +567,7 @@ MonoBehaviour:
   useSoftwareJPEGDecoder: 0
   width: 2048
   _activeTypeSettings: 
-  _zoom: 14
+  _zoom: 20
   latitude: 47.063884
   longitude: 15.448082
 --- !u!114 &1085486631
@@ -604,9 +648,9 @@ MonoBehaviour:
   fileCacheCustomPath: C:/Projects/TownRally/TownRallyRallySystem/MapsCache
   fileCacheTilePath: TileCache/{pid}/{mid}/{lbs}/{lng}/{zoom}/{x}/{y}
   fileCacheUnloadRate: 0.01
-  maxFileCacheSize: 84
+  maxFileCacheSize: 840
   useFileCache: 1
-  maxMemoryCacheSize: 38
+  maxMemoryCacheSize: 840
   memoryCacheUnloadRate: 0.01
   useMemoryCache: 1
 --- !u!114 &1085486634

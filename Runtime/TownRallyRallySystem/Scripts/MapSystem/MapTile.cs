@@ -5,21 +5,21 @@ namespace TownRally.RallySystem
 {
     internal class MapTile : MonoBehaviour
     {
-        internal void Init(KeyValuePair<int, int> coords, Transform parent, Material matShader, Texture2D texture)
+        internal void Init(Tile tile, Transform parent, Material matShader, Texture2D texture)
         {
 			Transform tTile = this.GetComponent<Transform>();
 			tTile.parent = parent;
-			tTile.localPosition = new Vector3(coords.Key, 0f, -coords.Value);
+			tTile.localPosition = new Vector3(tile.IndexI, 0f, -tile.IndexJ);
 			tTile.localEulerAngles = new Vector3(90f, 0f, 0f);
 			MeshRenderer mrTile = this.gameObject.AddComponent<MeshRenderer>();
 			Material matTile = new Material(matShader);
 			matTile.mainTexture = texture;
 			mrTile.material = matTile;
 			MeshFilter meshFilter = this.gameObject.AddComponent<MeshFilter>();
-			meshFilter.mesh = this.BuildQuad(1f, 1f, "mesh_quad");
+			meshFilter.mesh = BuildQuad(1f, 1f, "mesh_quad");
 		}
 
-		private Mesh BuildQuad(float width, float height, string name)
+		public static Mesh BuildQuad(float width, float height, string name)
 		{
 			Mesh mesh = new Mesh();
 			mesh.name = name;

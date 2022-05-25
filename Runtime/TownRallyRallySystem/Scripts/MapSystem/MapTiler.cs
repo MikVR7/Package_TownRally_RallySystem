@@ -6,33 +6,32 @@ namespace TownRally.RallySystem
     internal class MapTiler : MonoBehaviour
     {
 		[SerializeField] private Material matTile = null;
-        private Dictionary<KeyValuePair<int, int>, MapTile> mapTiles = new Dictionary<KeyValuePair<int, int>, MapTile>();
-		private Transform myTransform = null;
+        private Dictionary<Tile, MapTile> mapTiles = new Dictionary<Tile, MapTile>();
 
         internal void Init()
         {
-			this.myTransform = this.GetComponent<Transform>();
         }
 
-        internal void CreateNewTile(int coordX, int coordY, int minCoordX, int minCoordY, Texture2D texture)
+        internal void CreateNewTile(Transform parentObject, Tile tile, Texture2D texture)
         {
-            // if coordinate does not exist, create it;
-            KeyValuePair<int, int> coord = this.VerifyCoordinate(coordX-minCoordX, coordY-minCoordY);
-            Debug.Log("TILE: " + coord.Key + " " + coord.Value + " - " + coordX + " " + minCoordX + " - " + coordY + " " + minCoordY);
-            // create tile
-            GameObject goTile = new GameObject("tile_" + coord.Key + "_" + coord.Value);
-            mapTiles[coord] = goTile.AddComponent<MapTile>();
-            mapTiles[coord].Init(coord, this.myTransform, matTile, texture);
-        }
-
-        private KeyValuePair<int, int> VerifyCoordinate(int coordX, int coordY)
-        {
-            KeyValuePair<int, int> coord = new KeyValuePair<int, int>(coordX, coordY);
-            if (!this.mapTiles.ContainsKey(coord))
+            if (!this.mapTiles.ContainsKey(tile))
             {
-                this.mapTiles.Add(coord, null);
+                this.mapTiles.Add(tile, null);
+
+                // create tile
+                GameObject goTile = new GameObject("tile_" + tile.Horizontal + "_" + tile.Vertical);
+                mapTiles[tile] = goTile.AddComponent<MapTile>();
+                mapTiles[tile].Init(tile, parentObject, matTile, texture);
             }
-            return coord;
+        }
+
+        private Tile VerifyCoordinate(Tile tile)
+        {
+            if (!this.mapTiles.ContainsKey(tile))
+            {
+                this.mapTiles.Add(tile, null);
+            }
+            return tile;
         }
 	}
 }
