@@ -390,6 +390,7 @@ MonoBehaviour:
   prefabNode: {fileID: 935350868415381599, guid: 2307d88e568af24458f6f06429ac5311, type: 3}
   tMap: {fileID: 698325534}
   prefabWay: {fileID: 4459710001149208045, guid: 4cd39945ad919d740b0dff92eb2163f1, type: 3}
+  pathToMapData: C:\Users\atmik\Downloads\map.osm
 --- !u!1 &1044355295
 GameObject:
   m_ObjectHideFlags: 0
