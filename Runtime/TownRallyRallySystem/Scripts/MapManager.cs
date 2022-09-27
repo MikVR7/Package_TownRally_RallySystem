@@ -24,6 +24,7 @@ namespace TownRally.RallySystem
             this.goMap.name = mapPrefab.name;
             Transform tMap = goMap.GetComponent<Transform>();
             tMap.SetParent(this.myTransform);
+            tMap.localEulerAngles = new Vector3(0f, 180f, 0f);
         }
     }
 }
